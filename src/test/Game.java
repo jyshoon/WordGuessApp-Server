@@ -10,6 +10,8 @@ public class Game {
 	private int hostPlayerNum = 0;
 	private String answer;
 	
+	private int finalRound = 3;
+	
 	private ArrayList<Player> playerList = new ArrayList<Player>();
 	
 	public void setRoomName (String _roomName) {
@@ -77,7 +79,7 @@ public class Game {
 		broadcastMesg ("S2P_SEND_GAME_READY_CHAT", args);
 	}
 	
-	private void newGame () {
+	private void newProblem () {
 		if (hostPlayerNum == playerList.size() - 1) {
 			round ++;
 			String[] args = new String[1];
@@ -99,6 +101,43 @@ public class Game {
 		}
 	}
 	
+	private boolean checkEndOfGame ()
+	{
+		if (round == finalRound && hostPlayerNum == playerList.size() - 1) 
+			return true;
+		else
+			return false;
+	}
+	
+	private void endGame ()
+	{
+		String[] args = new String[2 * playerList.size()];
+		int i = 0;
+		
+		for (Player p : playerList) {
+			args[i++] = p.getNumber() + "";
+			args[i++] = p.getScore() + "";
+		}
+		broadcastMesg ("S2P_END_GAME", args);
+	}
+	
+	private void hitAnswer (int number, String answer) {
+		String[] args = new String[2];
+		
+		// TODO: 점수 계산 
+		playerList.get(number).addScore(10);
+		
+		args[0] = number + "";
+		args[1] = "" + playerList.get(number).getScore();
+		broadcastMesg ("S2P_CORRECT_ANSWER", args);
+		
+		if (checkEndOfGame ())
+			endGame ();
+		else {
+			newProblem ();	
+		}
+		
+	}
 	public void processSendGuessAnswer (int number, String playerAnswer) {
 		
 		String[] args = new String[2];
@@ -109,14 +148,8 @@ public class Game {
 		if (answer.compareTo(playerAnswer) == 0) {
 			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
 			// ���߸� CORRECT_ANSWER number ����
-			playerList.get(number).addScore(10);
 			
-			args = new String[2];
-			args[0] = number + "";
-			args[1] = "" + playerList.get(number).getScore();
-			broadcastMesg ("S2P_CORRECT_ANSWER", args);
-			
-			newGame ();
+			hitAnswer (number, playerAnswer);
 		}
 		else {
 			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
