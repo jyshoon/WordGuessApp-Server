@@ -9,7 +9,7 @@ import java.net.Socket;
 //system.out.println
 public class TCPServerTest {
 
-	private static final int PORT = 8017;
+	private static final int PORT = 8000;
 	//////////////
 	public static GameManager gameManager = new GameManager();
 	///
