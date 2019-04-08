@@ -8,7 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 //system.out.println
 public class TCPServerTest {
-
+	
+	
+	// 김경훈 수정.
 	private static final int PORT = 8000;
 	//////////////
 	public static GameManager gameManager = new GameManager();
@@ -37,6 +39,9 @@ public class TCPServerTest {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			System.out.println ("서버 (port = "+ PORT + ") started.");
+			System.out.println ("     Waiting for a connection...");
 			
 			while (true) {
 				Socket socket = null;
