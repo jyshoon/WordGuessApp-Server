@@ -15,7 +15,7 @@ public class MessageParser {
 	
 
 	public static int getMessageType (String mesg) {
-		String type_str = mesg.split(" ")[0];
+		String type_str = mesg.split("####")[0];
 		
 		
 		if (type_str.compareTo("P2S_REQ_ROOM_LIST") == 0)
@@ -47,10 +47,12 @@ public class MessageParser {
 		return -1;
 	}
 	
+	
+	/*
 	public static String getMessageData (String mesg, int ith) {
-		String arg = mesg.split(" ")[ith];
+		String arg = mesg.split("$$$$")[ith];
 		
 		return arg;
-	}
+	}*/
 }
 //

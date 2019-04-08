@@ -32,20 +32,24 @@ public class PlayerMesgRecvThread extends Thread {
 	
 	
 	private void process_P2S_CONNECT_CLIENT (String mesg) {
-		String myId = MessageParser.getMessageData(mesg, 1);
+		
+		String[] args = mesg.split("####");
+		
+		String myId = args[1];
 		
 		player.setId(myId);
 			
-		String data = "";
-		data += player.getNumber() + " " + myId;
-		
+//		String data = "";
+//		data += player.getNumber() + " " + myId;
+//		
 		//player.sendMessage("S2P_CLIENT_NUMBER", data);
 		game.processNewClient (player);
 	}
 	
 	private void process_P2S_READY_GAME (String mesg) {
-		String data = MessageParser.getMessageData(mesg, 1);
-		int number = Integer.parseInt(data);
+		String[] args = mesg.split("####");
+		
+		int number = Integer.parseInt(args[1]);
 		
 		player.setReady(true);
 		game.processReadyGame ();
@@ -58,69 +62,79 @@ public class PlayerMesgRecvThread extends Thread {
 	}
 	
 	private void process_P2S_SEND_HINT_LIST (String mesg) {
-		String[] parsedStr = mesg.split(" ");
-		
-		game.processSendHitList (parsedStr);
+		String[] parsedStr = mesg.split("####");
+		String[] args = new String[parsedStr.length - 1];
+		for (int i = 1; i < parsedStr.length; i++)
+			args[i-1] = parsedStr[i];
+		game.processSendHitList (args);
 		
 	}
 	
 	private void process_P2S_SEND_GAME_READY_CHAT (String mesg) {
-		String[] parsedStr = mesg.split(" ");
+		String[] args = mesg.split("####");
 
-		int number = Integer.parseInt(parsedStr[1]);
+		int number = Integer.parseInt(args[1]);
 		
-		String chatData = "";
-		for (int i = 2; i < parsedStr.length; i++)
-			chatData += parsedStr[i] + " ";
-		
-		game.processSendGameReadyChat (number, chatData);
+		game.processSendGameReadyChat (number, args[2]);
 		
 	}
 	
 	private void process_P2S_SEND_GUESS_ANSWER (String mesg) {
-		String[] parsedStr = mesg.split(" ");
+		String[] args = mesg.split("####");
 		
-		int number = Integer.parseInt(parsedStr[1]);
-		String answer = parsedStr[2];
+		int number = Integer.parseInt(args[1]);
+		String answer = args[2];
 		
 		game.processSendGuessAnswer (number, answer);
 	}
 	
 	private void process_P2S_REQ_ROOM_LIST (String mesg) {
 		
-		String[] roomList = TCPServerTest.gameManager.getRoomList();
+		String[] roomList = gameManager.getRoomList();
 		
-		String data = "" + roomList.length;
-		for (int i = 0; i < roomList.length; i++)
-			data += " " + roomList[i];
+		String[] args;
+		if (roomList == null) {
+			args = new String[1];
+			args[0] = "0";
+		}
+		else {
+			args = new String[roomList.length + 1];
+			args[0] = "" + roomList.length;
+			for (int i = 0; i < roomList.length; i++)
+				args[i+1] = roomList[i];
+		}
 		
-		player.sendMessage ("S2P_SEND_ROOM_LIST", data);
+//		String data = "" + roomList.length;
+//		for (int i = 0; i < roomList.length; i++)
+//			data += " " + roomList[i];
+//		
+		player.sendMessage ("S2P_SEND_ROOM_LIST", args);
 		
 	}
 	
 	private void process_P2S_ENTER_ROOM (String mesg) {
 		
-		String[] parsedStr = mesg.split(" ");
+		String[] args = mesg.split("####");
 		
-		//TODO: ¹æ¹øÈ£ ÇØ´çÇÏ´Â °ÔÀÓ¿¡ player °ü¸®ÇØ¾ßÇÔ
+		//TODO: ï¿½ï¿½ï¿½È£ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ó¿ï¿½ player ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
 		
-		String roomName = parsedStr[1];
+		String roomName = args[1];
 		
 		game = gameManager.findGame (roomName); 
 		
 		
 		if (game == null)
-			player.sendMessage ("S2P_ENTER_ROOM_FAIL", "");
+			player.sendMessage ("S2P_ENTER_ROOM_FAIL");
 		else {
 			game.addPlayer(player);
-			player.sendMessage ("S2P_ENTER_ROOM_OK", "");
+			player.sendMessage ("S2P_ENTER_ROOM_OK");
 		}		
 	}
 	
 	private void process_P2S_CREATE_ROOM (String mesg) {
-		String[] parsedStr = mesg.split(" ");
+		String[] args = mesg.split("####");
 		
-		String roomName = parsedStr[1];
+		String roomName = args[1];
 		
 		game = gameManager.findGame (roomName);
 		
@@ -131,10 +145,10 @@ public class PlayerMesgRecvThread extends Thread {
 			
 			game.addPlayer(player);
 			
-			player.sendMessage ("S2P_CREATE_ROOM_OK", "");
+			player.sendMessage ("S2P_CREATE_ROOM_OK");
 		}
 		else {
-			player.sendMessage ("S2P_CREATE_ROOM_FAIL", "");
+			player.sendMessage ("S2P_CREATE_ROOM_FAIL");
 		}
 	}
 	

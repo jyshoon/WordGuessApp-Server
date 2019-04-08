@@ -30,10 +30,28 @@ public class Player {
 		
 	}
 
-	public void sendMessage (String type, String data) {
+	public void sendMessage (String type) {
+		try {
+			
+			System.out.printf("Send [%s]\n", type);
+			bw.write(type);
+			bw.newLine();
+			bw.flush();
+			
+			//Thread.sleep (200);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void sendMessage (String type, String[] data) {
 	
 		String mesg;
-		mesg = type + " " + data;
+		mesg = type ;
+		for (int i = 0; i < data.length; i++) 
+			mesg += "####" + data[i];
+		
 		try {
 			
 			System.out.printf("Send [%s]\n", mesg);
@@ -41,14 +59,11 @@ public class Player {
 			bw.newLine();
 			bw.flush();
 			
-			Thread.sleep (200);
+			//Thread.sleep (200);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 
 	}
 	

@@ -32,10 +32,14 @@ public class Game {
 		
 		
 		for (Player p : playerList) {
-			p.sendMessage("S2P_CLIENT_NUMBER", player.getNumber() + " " + player.getId());
+			String[] args = new String[2];
+			args[0] = player.getNumber() + "";
+			args[1] = player.getId();
+			
+			p.sendMessage("S2P_CLIENT_NUMBER", args);
 			
 			if (p != player) {
-				player.sendMessage("S2P_CLIENT_NUMBER", p.getNumber() + " " + p.getId() );
+				player.sendMessage("S2P_CLIENT_NUMBER", args );
 			}
 		}
 	}
@@ -50,30 +54,35 @@ public class Game {
 		
 		if (isAllReady) {
 			System.out.println ("-------------> All Ready  ");
-			broadcastMesg ("S2P_START_GAME", "");
+			broadcastMesg ("S2P_START_GAME");
 		}
 	}
 	
 	public void processSendHitList (String[] mesg)
 	{
-		//mesg ¿¡´Â Player°¡ º¸³½ ¸Þ½ÃÁö ±×´ë·Î ÀúÀå
+		//mesg ï¿½ï¿½ï¿½ï¿½ Playerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½×´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		// mesg = P2S_SEND_HIT_LIST, stage, Hin1, Hint2, Hint3
 		
-		String returnMesgData = mesg[1] + " " + mesg[2] + " " + mesg[3] + " " + mesg[4];
-		broadcastMesg ("S2P_RECV_HINT_LIST", returnMesgData);
-		System.out.println ("---> " + returnMesgData);
+		//String returnMesgData = mesg[1] + " " + mesg[2] + " " + mesg[3] + " " + mesg[4];
+		broadcastMesg ("S2P_RECV_HINT_LIST", mesg);
+		//System.out.println ("---> " + returnMesgData);
 		
 	}
 	
 	public void processSendGameReadyChat (int number, String chatData) {
-		broadcastMesg ("S2P_SEND_GAME_READY_CHAT", number + " " + chatData);
-		System.out.println ("---> B: " + number + " " + chatData);
+		String[] args = new String[2];
+		args[0] = number + "";
+		args[1] = chatData;
+		
+		broadcastMesg ("S2P_SEND_GAME_READY_CHAT", args);
 	}
 	
 	private void newGame () {
 		if (hostPlayerNum == playerList.size() - 1) {
 			round ++;
-			broadcastMesg ("S2P_NEW_ROUND", round + "");
+			String[] args = new String[1];
+			args[0] = round + "";
+			broadcastMesg ("S2P_NEW_ROUND", args);
 			hostPlayerNum = 0;
 		}
 		else 
@@ -81,22 +90,31 @@ public class Game {
 		
 		answer = generateAnswer ();
 		
-		playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", answer);
+		String[] args = new String[1];
+		args[0] = answer;
+		playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", args);
 		for (Player p : playerList) {
 			if (p != playerList.get(hostPlayerNum))
-				p.sendMessage("S2P_RECV_HINT_READY", "");
+				p.sendMessage("S2P_RECV_HINT_READY");
 		}
 	}
 	
 	public void processSendGuessAnswer (int number, String playerAnswer) {
 		
-		broadcastMesg ("S2P_RECV_GUESS_ANSWER", number + " " + playerAnswer);
+		String[] args = new String[2];
+		args[0] = number + "";
+		args[1] = playerAnswer;
+		broadcastMesg ("S2P_RECV_GUESS_ANSWER", args);
 
 		if (answer.compareTo(playerAnswer) == 0) {
 			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
-			// ¸ÂÃß¸é CORRECT_ANSWER number Á¡¼ö
+			// ï¿½ï¿½ï¿½ß¸ï¿½ CORRECT_ANSWER number ï¿½ï¿½ï¿½ï¿½
 			playerList.get(number).addScore(10);
-			broadcastMesg ("S2P_CORRECT_ANSWER", number + " " + playerList.get(number).getScore());
+			
+			args = new String[2];
+			args[0] = number + "";
+			args[1] = "" + playerList.get(number).getScore();
+			broadcastMesg ("S2P_CORRECT_ANSWER", args);
 			
 			newGame ();
 		}
@@ -132,17 +150,25 @@ public class Game {
 			initGame ();
 			answer = generateAnswer ();
 			
-			
-			playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", answer);
+			String[] args = new String[1];
+			args[0] = answer;
+			playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", args);
 			for (Player p : playerList) {
 				if (p != playerList.get(hostPlayerNum))
-					p.sendMessage("S2P_RECV_HINT_READY", "");
+					p.sendMessage("S2P_RECV_HINT_READY");
 			}
 			
 		}
 	}
-	public void broadcastMesg (String type, String data) {
+	public void broadcastMesg (String type) {
 		
+		System.out.println ("Broadcast : " + type);
+		for (Player player : playerList) 
+			player.sendMessage(type);
+	}
+	public void broadcastMesg (String type, String[] data) {
+		
+		System.out.println ("Broadcast : " + type);
 		for (Player player : playerList) 
 			player.sendMessage(type, data);
 	}
