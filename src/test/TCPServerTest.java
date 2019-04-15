@@ -10,8 +10,8 @@ import java.net.Socket;
 public class TCPServerTest {
 	
 	
-	// 김경훈 수정.
-	private static final int PORT = 8003;
+	// 源�寃쏀썕 �닔�젙.
+	private static final int PORT = 8005;
 	//////////////
 	public static GameManager gameManager = new GameManager();
 	///
@@ -40,7 +40,7 @@ public class TCPServerTest {
 				e.printStackTrace();
 			}
 			
-			System.out.println ("서버 (port = "+ PORT + ") started.");
+			System.out.println ("�꽌踰� (port = "+ PORT + ") started.");
 			System.out.println ("     Waiting for a connection...");
 			
 			while (true) {
