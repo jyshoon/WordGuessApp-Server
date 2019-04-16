@@ -11,7 +11,7 @@ public class TCPServerTest {
 	
 	
 	// 源�寃쏀썕 �닔�젙.
-	private static final int PORT = 8005;
+	private static final int PORT = 8034;
 	//////////////
 	public static GameManager gameManager = new GameManager();
 	///
@@ -21,10 +21,10 @@ public class TCPServerTest {
 		Game game = new Game ("Room 1", 4);
 		gameManager.addGame(game);
 		
-		game = new Game ("Room 2", 3);
+		game = new Game ("Room 2", 4);
 		gameManager.addGame(game);
 		
-		game = new Game ("Room 3", 2);
+		game = new Game ("Room 3", 4);
 		gameManager.addGame(game);
 		
 		

@@ -59,13 +59,15 @@ public class Game {
 		
 		for (Player p : playerList) {
 			String[] args = new String[2];
-			args[0] = player.getNumber() + "";
-			args[1] = player.getId();
+			args[0] = p.getNumber() + "";
+			args[1] = p.getId();
 			
-			p.sendMessage("S2P_CLIENT_NUMBER", args);
+			player.sendMessage("S2P_CLIENT_NUMBER", args);
 			
 			if (p != player) {
-				player.sendMessage("S2P_CLIENT_NUMBER", args );
+				args[0] = player.getNumber() + "";
+				args[1] = player.getId();
+				p.sendMessage("S2P_CLIENT_NUMBER", args );
 			}
 		}
 	}
@@ -87,7 +89,7 @@ public class Game {
 	
 	public void processSendHitList (String[] mesg)
 	{
-		//mesg ���� Player�� ���� �޽��� �״�� ����
+		//mesg 占쏙옙占쏙옙 Player占쏙옙 占쏙옙占쏙옙 占쌨쏙옙占쏙옙 占쌓댐옙占� 占쏙옙占쏙옙
 		// mesg = P2S_SEND_HIT_LIST, stage, Hin1, Hint2, Hint3
 		
 		//String returnMesgData = mesg[1] + " " + mesg[2] + " " + mesg[3] + " " + mesg[4];
@@ -149,7 +151,7 @@ public class Game {
 	private void hitAnswer (int number, String answer) {
 		String[] args = new String[2];
 		
-		// TODO: 점수 계산 
+		// TODO: �젏�닔 怨꾩궛 
 		playerList.get(number).addScore(10);
 		
 		args[0] = number + "";
@@ -172,7 +174,7 @@ public class Game {
 
 		if (answer.compareTo(playerAnswer) == 0) {
 			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
-			// ���߸� CORRECT_ANSWER number ����
+			// 占쏙옙占쌩몌옙 CORRECT_ANSWER number 占쏙옙占쏙옙
 			
 			hitAnswer (number, playerAnswer);
 		}
