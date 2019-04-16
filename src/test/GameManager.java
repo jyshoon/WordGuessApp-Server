@@ -18,16 +18,29 @@ public class GameManager {
 		return null;
 	}
 	
+	
 	public String[] getRoomList () {
 		
 		String[] roomList = new String[gameList.size()];
 		
-		for (int i = 0; i < gameList.size(); i++) {
-			
-			roomList[i] = gameList.get(i).getRoomName();
+		int i = 0;
+		for (Game g : gameList) {
+			roomList[i] = g.getRoomName();
+			roomList[i] += "::" + g.getCurrentNumPlayers();
+			roomList[i] += "/" + g.getMaxNumPlayers();
+			switch (g.getStatus()) {
+			case Game.WAITING:
+				roomList[i] += "::WAITING"; break;
+			case Game.PLAYING:
+				roomList[i] += "::PLAYING"; break;
+			case Game.ENDING:
+				roomList[i] += "::ENDING"; break;
+			}
+			i++;
 		}
 		
 		return roomList;
 	}
+	
 }
 //

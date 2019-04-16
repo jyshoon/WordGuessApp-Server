@@ -3,8 +3,14 @@ package test;
 import java.util.ArrayList;
 
 public class Game {
-
+	public static final int WAITING = 0;
+	public static final int PLAYING = 1;
+	public static final int ENDING = 2;
+	
 	private String roomName;
+	private int maxNumPlayers;
+	private int status;
+	
 	private int round = 1;
 	private int stage = 1;
 	private int hostPlayerNum = 0;
@@ -13,6 +19,20 @@ public class Game {
 	private int finalRound = 3;
 	
 	private ArrayList<Player> playerList = new ArrayList<Player>();
+
+	public Game (String name, int maxPlayers) {
+		roomName = name;
+		maxNumPlayers = maxPlayers;
+		status = WAITING;
+	}
+	
+	public int getMaxNumPlayers () {
+		return maxNumPlayers;
+	}
+	
+	public int getStatus () {
+		return status;
+	}
 	
 	public void setRoomName (String _roomName) {
 		roomName = _roomName;
@@ -20,6 +40,10 @@ public class Game {
 	
 	public String getRoomName () {
 		return roomName;
+	}
+	
+	public int getCurrentNumPlayers () {
+		return playerList.size();
 	}
 	
 	public void addPlayer (Player player) {
@@ -56,6 +80,7 @@ public class Game {
 		
 		if (isAllReady) {
 			System.out.println ("-------------> All Ready  ");
+			status = PLAYING;
 			broadcastMesg ("S2P_START_GAME");
 		}
 	}

@@ -100,8 +100,9 @@ public class PlayerMesgRecvThread extends Thread {
 		else {
 			args = new String[roomList.length + 1];
 			args[0] = "" + roomList.length;
-			for (int i = 0; i < roomList.length; i++)
+			for (int i = 0; i < roomList.length; i++) {
 				args[i+1] = roomList[i];
+			}
 		}
 		
 //		String data = "" + roomList.length;
@@ -139,8 +140,7 @@ public class PlayerMesgRecvThread extends Thread {
 		game = gameManager.findGame (roomName);
 		
 		if (game == null) {
-			game = new Game ();
-			game.setRoomName(roomName);
+			game = new Game (roomName, 4);
 			gameManager.addGame(game);
 			
 			game.addPlayer(player);

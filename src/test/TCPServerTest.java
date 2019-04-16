@@ -18,16 +18,13 @@ public class TCPServerTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Game game = new Game ();
-		game.setRoomName("Room1");
+		Game game = new Game ("Room 1", 4);
 		gameManager.addGame(game);
 		
-		game = new Game ();
-		game.setRoomName("Room2");
+		game = new Game ("Room 2", 3);
 		gameManager.addGame(game);
 		
-		game = new Game ();
-		game.setRoomName("Room3");
+		game = new Game ("Room 3", 2);
 		gameManager.addGame(game);
 		
 		
