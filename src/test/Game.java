@@ -87,14 +87,13 @@ public class Game {
 		}
 	}
 	
-	public void processSendHitList (String[] mesg)
-	{
-		//mesg 占쏙옙占쏙옙 Player占쏙옙 占쏙옙占쏙옙 占쌨쏙옙占쏙옙 占쌓댐옙占� 占쏙옙占쏙옙
-		// mesg = P2S_SEND_HIT_LIST, stage, Hin1, Hint2, Hint3
+	public void processSendHitListEnd (String[] mesg){
+		broadcastMesg ("S2P_RECV_HINT_LIST_END", mesg);
 		
-		//String returnMesgData = mesg[1] + " " + mesg[2] + " " + mesg[3] + " " + mesg[4];
+	}
+	
+	public void processSendHitList (String[] mesg){
 		broadcastMesg ("S2P_RECV_HINT_LIST", mesg);
-		//System.out.println ("---> " + returnMesgData);
 		
 	}
 	
@@ -165,8 +164,8 @@ public class Game {
 		}
 		
 	}
+	
 	public void processSendGuessAnswer (int number, String playerAnswer) {
-		
 		String[] args = new String[2];
 		args[0] = number + "";
 		args[1] = playerAnswer;
@@ -180,8 +179,8 @@ public class Game {
 		}
 		else {
 			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
+			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
 		}
-		
 	}
 	
 	private void initGame () {

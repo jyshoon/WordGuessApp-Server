@@ -61,6 +61,15 @@ public class PlayerMesgRecvThread extends Thread {
 		game.processReadyPlay ();
 	}
 	
+	private void process_P2S_SEND_HINT_LIST_END (String mesg) {
+		String[] parsedStr = mesg.split("####");
+		String[] args = new String[parsedStr.length - 1];
+		for (int i = 1; i < parsedStr.length; i++)
+			args[i-1] = parsedStr[i];
+		game.processSendHitListEnd (args);
+		
+	}
+	
 	private void process_P2S_SEND_HINT_LIST (String mesg) {
 		String[] parsedStr = mesg.split("####");
 		String[] args = new String[parsedStr.length - 1];
@@ -117,7 +126,7 @@ public class PlayerMesgRecvThread extends Thread {
 		
 		String[] args = mesg.split("####");
 		
-		//TODO: ���ȣ �ش��ϴ� ���ӿ� player �����ؾ���
+		//TODO: 占쏙옙占싫� 占쌔댐옙占싹댐옙 占쏙옙占쌈울옙 player 占쏙옙占쏙옙占쌔억옙占쏙옙
 		
 		String roomName = args[1];
 		
@@ -189,6 +198,10 @@ public class PlayerMesgRecvThread extends Thread {
 			
 			case MessageParser.P2S_READY_PLAY:
 				process_P2S_READY_PLAY (mesg);
+				break;
+				
+			case MessageParser.P2S_SEND_HINT_LIST_END:
+				process_P2S_SEND_HINT_LIST_END (mesg);
 				break;
 			
 			case MessageParser.P2S_SEND_HINT_LIST:

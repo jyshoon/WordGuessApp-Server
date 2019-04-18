@@ -11,6 +11,7 @@ public class MessageParser {
 	public static final int P2S_REQ_ROOM_LIST = 106;
 	public static final int P2S_ENTER_ROOM = 107;
 	public static final int P2S_CREATE_ROOM = 108;
+	public static final int P2S_SEND_HINT_LIST_END = 109;
 
 	
 
@@ -35,6 +36,9 @@ public class MessageParser {
 		
 		if (type_str.compareTo("P2S_READY_PLAY") == 0)
 			return P2S_READY_PLAY;
+		
+		if (type_str.compareTo("P2S_SEND_HINT_LIST_END") == 0)
+			return P2S_SEND_HINT_LIST_END;
 		
 		if (type_str.compareTo("P2S_SEND_HINT_LIST") == 0)
 			return P2S_SEND_HINT_LIST;
