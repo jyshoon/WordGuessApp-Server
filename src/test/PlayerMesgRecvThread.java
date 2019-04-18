@@ -161,6 +161,10 @@ public class PlayerMesgRecvThread extends Thread {
 		}
 	}
 	
+	private void process_P2S_ANSWER_TIME_OVER(String mesg) {
+		game.processAnswerTimeOver();		
+	}
+	
 	public void run () {
 		while (true) {
 			String mesg = null;
@@ -214,6 +218,10 @@ public class PlayerMesgRecvThread extends Thread {
 			
 			case MessageParser.P2S_SEND_GUESS_ANSWER:
 				process_P2S_SEND_GUESS_ANSWER (mesg);
+				break;
+				
+			case MessageParser.P2S_ANSWER_TIME_OVER:
+				process_P2S_ANSWER_TIME_OVER (mesg);
 				break;
 			}
 		}

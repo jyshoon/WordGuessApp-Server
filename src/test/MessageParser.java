@@ -12,6 +12,7 @@ public class MessageParser {
 	public static final int P2S_ENTER_ROOM = 107;
 	public static final int P2S_CREATE_ROOM = 108;
 	public static final int P2S_SEND_HINT_LIST_END = 109;
+	public static final int P2S_ANSWER_TIME_OVER = 110;
 
 	
 
@@ -48,6 +49,10 @@ public class MessageParser {
 		
 		if (type_str.compareTo("P2S_SEND_GUESS_ANSWER") == 0) 
 			return P2S_SEND_GUESS_ANSWER;
+		
+		if (type_str.compareTo("P2S_ANSWER_TIME_OVER") == 0) 
+			return P2S_ANSWER_TIME_OVER;
+		
 		return -1;
 	}
 	

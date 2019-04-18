@@ -12,7 +12,7 @@ public class Game {
 	private int status;
 	
 	private int round = 1;
-	private int stage = 1;
+	private int stage = 0;
 	private int hostPlayerNum = 0;
 	private String answer;
 	
@@ -152,6 +152,7 @@ public class Game {
 		
 		// TODO: �젏�닔 怨꾩궛 
 		playerList.get(number).addScore(10);
+		playerList.get(hostPlayerNum).addScore(5);
 		
 		args[0] = number + "";
 		args[1] = "" + playerList.get(number).getScore();
@@ -182,6 +183,40 @@ public class Game {
 			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
 		}
 	}
+	
+	public void processAnswerTimeOver () {
+		if(stage == 1) {
+			if (checkEndOfGame ())
+				endGame ();
+			else {
+				newProblem ();	
+			}
+		}
+		else {
+			stage++;
+			String[] args = new String[1];
+			args[0] = stage + "";
+			broadcastMesg("S2P_NEW_STAGE", args);
+		}
+	
+		
+		String[] args = new String[2];
+		args[0] = number + "";
+		args[1] = playerAnswer;
+		broadcastMesg ("S2P_RECV_GUESS_ANSWER", args);
+
+		if (answer.compareTo(playerAnswer) == 0) {
+			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
+			// 占쏙옙占쌩몌옙 CORRECT_ANSWER number 占쏙옙占쏙옙
+			
+			hitAnswer (number, playerAnswer);
+		}
+		else {
+			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
+			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
+		}
+	}
+
 	
 	private void initGame () {
 		round = 1;
@@ -231,5 +266,6 @@ public class Game {
 		for (Player player : playerList) 
 			player.sendMessage(type, data);
 	}
+	
 }
 //
