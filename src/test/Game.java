@@ -116,6 +116,7 @@ public class Game {
 		else 
 			hostPlayerNum ++;
 		
+		stage = 0;
 		answer = generateAnswer ();
 		
 		String[] args = new String[1];
@@ -185,6 +186,7 @@ public class Game {
 	}
 	
 	public void processAnswerTimeOver () {
+		System.out.println ("stage = "+ stage);
 		if(stage == 1) {
 			if (checkEndOfGame ())
 				endGame ();
@@ -198,29 +200,12 @@ public class Game {
 			args[0] = stage + "";
 			broadcastMesg("S2P_NEW_STAGE", args);
 		}
-	
-		
-		String[] args = new String[2];
-		args[0] = number + "";
-		args[1] = playerAnswer;
-		broadcastMesg ("S2P_RECV_GUESS_ANSWER", args);
-
-		if (answer.compareTo(playerAnswer) == 0) {
-			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
-			// 占쏙옙占쌩몌옙 CORRECT_ANSWER number 占쏙옙占쏙옙
-			
-			hitAnswer (number, playerAnswer);
-		}
-		else {
-			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
-			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
-		}
 	}
 
 	
 	private void initGame () {
 		round = 1;
-		stage = 1;
+		stage = 0;
 		hostPlayerNum = 0;
 
 		
