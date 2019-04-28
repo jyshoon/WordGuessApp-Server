@@ -1,6 +1,7 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
 	public static final int WAITING = 0;
@@ -212,9 +213,15 @@ public class Game {
 	}
 	
 	private String generateAnswer () {
-		String[] answerList = {"Girin", "Tiger", "Pig", "Lion", "Cat", "Dog", "Mouse"};
+		String[] answerList = {"Giraffe", "Hedgehog", "Leopard", "Cat", 
+								"Raccon", "Lion", "Pigeon", "Rabbit",
+								"Wolf", "Dog", "Smartphone", "Elephant",
+								"Butterfly", "Strawberry", "Blueberry"};
 		
-		return "Girin";
+		Random rand = new Random ();
+		
+		int n = rand.nextInt (answerList.length);
+		return answerList[n];
 	}
 	
 	public void processReadyPlay () {
