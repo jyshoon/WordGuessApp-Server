@@ -59,15 +59,17 @@ public class Game {
 		
 		
 		for (Player p : playerList) {
-			String[] args = new String[2];
+			String[] args = new String[3];
 			args[0] = p.getNumber() + "";
 			args[1] = p.getId();
-			
+			args[2] = p.getResId() +"";
+
 			player.sendMessage("S2P_CLIENT_NUMBER", args);
 			
 			if (p != player) {
 				args[0] = player.getNumber() + "";
 				args[1] = player.getId();
+				args[2] = player.getResId() +"";
 				p.sendMessage("S2P_CLIENT_NUMBER", args );
 			}
 		}

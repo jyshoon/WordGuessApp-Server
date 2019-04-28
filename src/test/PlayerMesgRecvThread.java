@@ -36,8 +36,10 @@ public class PlayerMesgRecvThread extends Thread {
 		String[] args = mesg.split("####");
 		
 		String myId = args[1];
+		int myResId = Integer.parseInt(args[2]);
 		
 		player.setId(myId);
+		player.setResId (myResId);
 			
 //		String data = "";
 //		data += player.getNumber() + " " + myId;

@@ -9,6 +9,7 @@ public class Player {
 	
 
 	private String id;
+	private int resId;
 	private int number;
 	private Socket sock;
 	private boolean isReady = false;
@@ -106,8 +107,14 @@ public class Player {
 	public void setReady(boolean isReady) {
 		this.isReady = isReady;
 	}
+
+	public void setResId(int myResId) {
+		resId = myResId;
+	}
 	
-	
+	public int getResId () {
+		return resId;
+	}
 
 }
 //
