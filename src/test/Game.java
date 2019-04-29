@@ -86,7 +86,7 @@ public class Game {
 		if (isAllReady) {
 			System.out.println ("-------------> All Ready  ");
 			status = PLAYING;
-			broadcastMesg ("S2P_START_GAME");
+			broadcastMesg ("S2P_START_GAME", playerList.size() +"");
 		}
 	}
 	
@@ -152,14 +152,16 @@ public class Game {
 	}
 	
 	private void hitAnswer (int number, String answer) {
-		String[] args = new String[2];
+		String[] args = new String[playerList.size()];
 		
 		// TODO: �젏�닔 怨꾩궛 
 		playerList.get(number).addScore(10);
 		playerList.get(hostPlayerNum).addScore(5);
 		
 		args[0] = number + "";
-		args[1] = "" + playerList.get(number).getScore();
+		for (int i = 0; i < playerList.size(); i++) {
+			args[i+1] = "" + playerList.get(i).getScore();
+		}
 		broadcastMesg ("S2P_CORRECT_ANSWER", args);
 		
 		if (checkEndOfGame ())
@@ -247,6 +249,13 @@ public class Game {
 			}
 			
 		}
+	}
+	
+	public void broadcastMesg (String type, String data) {
+		
+		System.out.println ("Broadcast : " + type);
+		for (Player player : playerList) 
+			player.sendMessage(type, data);
 	}
 	public void broadcastMesg (String type) {
 		

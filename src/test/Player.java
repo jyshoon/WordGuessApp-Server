@@ -31,6 +31,27 @@ public class Player {
 		
 	}
 
+	public void sendMessage (String type, String data) {
+	
+		String mesg;
+		mesg = type ;
+		mesg += "####" + data;
+		
+		try {
+			
+			System.out.printf("Send [%s]\n", mesg);
+			bw.write(mesg);
+			bw.newLine();
+			bw.flush();
+			
+			//Thread.sleep (200);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+
+	}
+	
 	public void sendMessage (String type) {
 		try {
 			
