@@ -152,7 +152,7 @@ public class Game {
 	}
 	
 	private void hitAnswer (int number, String answer) {
-		String[] args = new String[playerList.size()];
+		String[] args = new String[playerList.size()+1];
 		
 		// TODO: �젏�닔 怨꾩궛 
 		playerList.get(number).addScore(10);
