@@ -17,6 +17,8 @@ public class Game {
 	private int hostPlayerNum = 0;
 	private String answer;
 	
+	private GameManager gameMngr = null;
+	
 	private int finalRound = 3;
 	
 	private ArrayList<Player> playerList = new ArrayList<Player>();
@@ -25,6 +27,10 @@ public class Game {
 		roomName = name;
 		maxNumPlayers = maxPlayers;
 		status = WAITING;
+	}
+	
+	public void setGameManager (GameManager gameMngr) {
+		this.gameMngr = gameMngr;
 	}
 	
 	public int getMaxNumPlayers () {
@@ -149,6 +155,8 @@ public class Game {
 			args[i++] = p.getScore() + "";
 		}
 		broadcastMesg ("S2P_END_GAME", args);
+		
+		gameMngr.removeGame(this);
 	}
 	
 	private void hitAnswer (int number, String answer) {

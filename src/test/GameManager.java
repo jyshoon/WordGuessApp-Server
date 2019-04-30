@@ -7,6 +7,11 @@ public class GameManager {
 	
 	public void addGame (Game game) {
 		gameList.add(game);
+		game.setGameManager(this);
+	}
+	
+	public void removeGame (Game game) {
+		gameList.remove(game);
 	}
 	
 	public Game findGame (String roomName) {

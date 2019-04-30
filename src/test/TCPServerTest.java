@@ -11,7 +11,7 @@ public class TCPServerTest {
 	
 	
 	// 源�寃쏀썕 �닔�젙.
-	private static final int PORT = 8012;
+	private static final int PORT = 8004;
 	//////////////
 	public static GameManager gameManager = new GameManager();
 	///
