@@ -127,13 +127,16 @@ public class Game {
 		
 		stage = 0;
 		answer = generateAnswer ();
+		playerList.get(hostPlayerNum).setAnswerChance(false);
 		
 		String[] args = new String[1];
 		args[0] = answer;
 		playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", args);
 		for (Player p : playerList) {
-			if (p != playerList.get(hostPlayerNum))
+			if (p != playerList.get(hostPlayerNum)) {
 				p.sendMessage("S2P_RECV_HINT_READY");
+				p.setAnswerChance(true);
+			}
 		}
 	}
 	
@@ -181,25 +184,46 @@ public class Game {
 	}
 	
 	public void processSendGuessAnswer (int number, String playerAnswer) {
-		String[] args = new String[2];
+		String[] args = new String[3];
 		args[0] = number + "";
 		args[1] = playerAnswer;
+		
+		if (answer.compareTo(playerAnswer) == 0) {
+			args[2] = "1"; // Correct answer
+			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
+
+		}
+		else {
+			args[2] = "0"; // Wrong answer
+			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
+		}
+		
 		broadcastMesg ("S2P_RECV_GUESS_ANSWER", args);
 
 		if (answer.compareTo(playerAnswer) == 0) {
-			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
-			// 占쏙옙占쌩몌옙 CORRECT_ANSWER number 占쏙옙占쏙옙
-			
 			hitAnswer (number, playerAnswer);
 		}
 		else {
-			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
-			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
+			playerList.get(number).setAnswerChance (false);
+			boolean allWrongAnswer = true;
+			for (Player p : playerList) {
+				if (p.getAnswerChance() == true)
+					allWrongAnswer = false;
+			}
+			
+			if (allWrongAnswer) { // Everyone gets wrong answer
+				processAnswerTimeOver ();
+			}
 		}
+		
+//		else {
+//			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
+//		}
 	}
 	
 	public void processAnswerTimeOver () {
 		System.out.println ("stage = "+ stage);
+		
 		if(stage == 1) {
 			if (checkEndOfGame ())
 				endGame ();
@@ -211,8 +235,14 @@ public class Game {
 			stage++;
 			String[] args = new String[1];
 			args[0] = stage + "";
+			
+			for (Player p : playerList)
+				p.setAnswerChance(true);
+			playerList.get(hostPlayerNum).setAnswerChance(false);
+			
 			broadcastMesg("S2P_NEW_STAGE", args);
 		}
+		
 	}
 
 	
@@ -221,7 +251,9 @@ public class Game {
 		stage = 0;
 		hostPlayerNum = 0;
 
-		
+		for (Player p : playerList)
+			p.setAnswerChance(true);
+		playerList.get(hostPlayerNum).setAnswerChance(false);
 	}
 	
 	private String generateAnswer () {

@@ -16,6 +16,7 @@ public class Player {
 	private boolean isPlayReady = false;
 	private int score = 0;
 	private BufferedWriter bw = null;
+	private boolean hasAnswerChance = true;
 	
 	
 	public Player (Socket s) {
@@ -31,6 +32,14 @@ public class Player {
 		
 	}
 
+	public void setAnswerChance (boolean flag) {
+		hasAnswerChance = flag;
+	}
+	
+	public boolean getAnswerChance () {
+		return hasAnswerChance;
+	}
+	
 	public void sendMessage (String type, String data) {
 	
 		String mesg;
