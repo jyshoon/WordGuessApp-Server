@@ -48,7 +48,7 @@ public class Player {
 		
 		try {
 			
-			System.out.printf("Send [%s]\n", mesg);
+			System.out.printf("Send [%s]\n\n", mesg);
 			bw.write(mesg);
 			bw.newLine();
 			bw.flush();
@@ -64,7 +64,7 @@ public class Player {
 	public void sendMessage (String type) {
 		try {
 			
-			System.out.printf("Send [%s]\n", type);
+			System.out.printf("Send [%s]\n\n", type);
 			bw.write(type);
 			bw.newLine();
 			bw.flush();
@@ -85,7 +85,7 @@ public class Player {
 		
 		try {
 			
-			System.out.printf("Send [%s]\n", mesg);
+			System.out.printf("Send [%s]\n\n", mesg);
 			bw.write(mesg);
 			bw.newLine();
 			bw.flush();

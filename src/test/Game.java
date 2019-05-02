@@ -90,7 +90,7 @@ public class Game {
 		}
 		
 		if (isAllReady) {
-			System.out.println ("-------------> All Ready  ");
+			System.out.println ("-------------> All Ready  \n");
 			status = PLAYING;
 			broadcastMesg ("S2P_START_GAME", playerList.size() +"");
 		}
@@ -222,7 +222,7 @@ public class Game {
 	}
 	
 	public void processAnswerTimeOver () {
-		System.out.println ("stage = "+ stage);
+		System.out.println ("stage = "+ stage + "\n");
 		
 		if(stage == 1) {
 			if (checkEndOfGame ())
@@ -293,19 +293,19 @@ public class Game {
 	
 	public void broadcastMesg (String type, String data) {
 		
-		System.out.println ("Broadcast : " + type);
+		System.out.println ("Broadcast : " + type + "\n");
 		for (Player player : playerList) 
 			player.sendMessage(type, data);
 	}
 	public void broadcastMesg (String type) {
 		
-		System.out.println ("Broadcast : " + type);
+		System.out.println ("Broadcast : " + type + "\n");
 		for (Player player : playerList) 
 			player.sendMessage(type);
 	}
 	public void broadcastMesg (String type, String[] data) {
 		
-		System.out.println ("Broadcast : " + type);
+		System.out.println ("Broadcast : " + type + "\n");
 		for (Player player : playerList) 
 			player.sendMessage(type, data);
 	}

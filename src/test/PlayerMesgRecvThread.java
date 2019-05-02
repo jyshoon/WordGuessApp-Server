@@ -177,7 +177,7 @@ public class PlayerMesgRecvThread extends Thread {
 				e.printStackTrace();
 			}
 				
-			System.out.printf("Recved : [%s] \n", mesg);
+			System.out.printf("Recved : [%s] \n\n", mesg);
 			
 			switch (MessageParser.getMessageType(mesg)) {
 			
