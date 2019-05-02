@@ -22,6 +22,8 @@ public class Game {
 	private int finalRound = 3;
 	
 	private ArrayList<Player> playerList = new ArrayList<Player>();
+	
+	
 
 	public Game (String name, int maxPlayers) {
 		roomName = name;
@@ -81,12 +83,19 @@ public class Game {
 		}
 	}
 	
-	public void processReadyGame () {
+	public void processReadyGame (int number) {
+		
+		String arg;
+		arg = "" + number;
 		
 		boolean isAllReady = true;
 		for (Player p : playerList) {
 			if (p.isReady() == false)
 				isAllReady = false;
+		}
+		
+		if(!isAllReady) {
+			broadcastMesg("S2P_PLAYER_GAME_READY", arg);
 		}
 		
 		if (isAllReady) {

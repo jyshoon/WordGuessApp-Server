@@ -54,7 +54,7 @@ public class PlayerMesgRecvThread extends Thread {
 		int number = Integer.parseInt(args[1]);
 		
 		player.setReady(true);
-		game.processReadyGame ();
+		game.processReadyGame (number);
 	}
 	
 	private void process_P2S_READY_PLAY (String mesg) {
