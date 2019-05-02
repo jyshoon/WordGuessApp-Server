@@ -203,16 +203,18 @@ public class Game {
 
 		}
 		else {
+			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
 			args[2] = "0"; // Wrong answer
 			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
 		}
 		
 		broadcastMesg ("S2P_RECV_GUESS_ANSWER", args);
 
-		if (answer.compareTo(playerAnswer) == 0) {
+		
+		if (answer.compareTo(playerAnswer) == 0) {				//정답이라면	
 			hitAnswer (number, playerAnswer);
 		}
-		else {
+		else {													//오답이라면
 			playerList.get(number).setAnswerChance (false);
 			boolean allWrongAnswer = true;
 			for (Player p : playerList) {
@@ -225,9 +227,6 @@ public class Game {
 			}
 		}
 		
-//		else {
-//			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
-//		}
 	}
 	
 	public void processAnswerTimeOver () {
