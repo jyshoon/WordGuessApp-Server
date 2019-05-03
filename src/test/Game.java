@@ -16,6 +16,7 @@ public class Game {
 	private int stage = 0;
 	private int hostPlayerNum = 0;
 	private String answer;
+	private String koreanAnswer;
 	
 	private GameManager gameMngr = null;
 	
@@ -30,6 +31,7 @@ public class Game {
 		maxNumPlayers = maxPlayers;
 		status = WAITING;
 	}
+
 	
 	public void setGameManager (GameManager gameMngr) {
 		this.gameMngr = gameMngr;
@@ -197,21 +199,32 @@ public class Game {
 		args[0] = number + "";
 		args[1] = playerAnswer;
 		
-		if (answer.compareTo(playerAnswer) == 0) {
+		
+		String[] answerList = {"Giraffe", "Hedgehog", "Leopard", "Cat", 
+				"Raccon", "Lion", "Pigeon", "Rabbit",
+				"Wolf", "Dog", "Smartphone", "Elephant",
+				"Butterfly", "Strawberry", "Blueberry"};
+		
+		
+		
+		
+		
+		
+		
+		if (answer.compareTo(playerAnswer) == 0 || koreanAnswer.compareTo(playerAnswer)==0) {
 			args[2] = "1"; // Correct answer
 			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
 
 		}
 		else {
-			playerList.get(number).sendMessage("S2P_WRONG_ANSWER");
 			args[2] = "0"; // Wrong answer
 			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
 		}
 		
-		broadcastMesg ("S2P_RECV_GUESS_ANSWER", args);
+		broadcastMesg ("S2P_RECV_GUESS_ANSWER", args);			//정답인가 오답인가 보내줌
 
 		
-		if (answer.compareTo(playerAnswer) == 0) {				//정답이라면	
+		if (answer.compareTo(playerAnswer) == 0 || koreanAnswer.compareTo(playerAnswer)==0) {				//정답이라면	
 			hitAnswer (number, playerAnswer);
 		}
 		else {													//오답이라면
@@ -233,6 +246,15 @@ public class Game {
 		System.out.println ("stage = "+ stage + "\n");
 		
 		if(stage == 1) {
+			
+			broadcastMesg("S2P_WRONG_ANSWER");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			if (checkEndOfGame ())
 				endGame ();
 			else {
@@ -270,9 +292,13 @@ public class Game {
 								"Wolf", "Dog", "Smartphone", "Elephant",
 								"Butterfly", "Strawberry", "Blueberry"};
 		
+		String[] koreanAnswerList = {"기린", "고슴도치","표범","고양이","너구리","사자","비둘기","토끼","늑대","개","스마트폰","코끼리","나비","딸기","블루베리"};
+		
 		Random rand = new Random ();
 		
 		int n = rand.nextInt (answerList.length);
+		this.koreanAnswer = koreanAnswerList[n];
+		
 		return answerList[n];
 	}
 	
@@ -286,14 +312,15 @@ public class Game {
 		if (isAllReady) {
 			System.out.println ("-------------> All Ready for Play  ");
 			initGame ();
+			
 			answer = generateAnswer ();
 			
 			String[] args = new String[1];
 			args[0] = answer;
-			playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", args);
+			playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", args);	//문제담당
 			for (Player p : playerList) {
 				if (p != playerList.get(hostPlayerNum))
-					p.sendMessage("S2P_RECV_HINT_READY");
+					p.sendMessage("S2P_RECV_HINT_READY");						//나머지
 			}
 			
 		}
