@@ -194,6 +194,8 @@ public class Game {
 		
 	}
 	
+	
+	
 	public void processSendGuessAnswer (int number, String playerAnswer) {
 		String[] args = new String[3];
 		args[0] = number + "";
@@ -204,11 +206,6 @@ public class Game {
 				"Raccon", "Lion", "Pigeon", "Rabbit",
 				"Wolf", "Dog", "Smartphone", "Elephant",
 				"Butterfly", "Strawberry", "Blueberry"};
-		
-		
-		
-		
-		
 		
 		
 		if (answer.compareTo(playerAnswer) == 0 || koreanAnswer.compareTo(playerAnswer)==0) {
