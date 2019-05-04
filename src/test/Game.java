@@ -108,6 +108,7 @@ public class Game {
 	}
 	
 	public void processSendHitListEnd (String[] mesg){
+		
 		broadcastMesg ("S2P_RECV_HINT_LIST_END", mesg);
 		
 	}
@@ -126,6 +127,8 @@ public class Game {
 	}
 	
 	private void newProblem () {
+		
+
 		if (hostPlayerNum == playerList.size() - 1) {
 			round ++;
 			String[] args = new String[1];
@@ -153,7 +156,8 @@ public class Game {
 	
 	private boolean checkEndOfGame ()
 	{
-		if (round == finalRound && hostPlayerNum == playerList.size() - 1) 
+		//if (round == finalRound && hostPlayerNum == playerList.size() - 1) 
+		if (round == 1 && hostPlayerNum == playerList.size() - 1) 
 			return true;
 		else
 			return false;
@@ -185,6 +189,13 @@ public class Game {
 			args[i+1] = "" + playerList.get(i).getScore();
 		}
 		broadcastMesg ("S2P_CORRECT_ANSWER", args);
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if (checkEndOfGame ())
 			endGame ();
@@ -246,7 +257,7 @@ public class Game {
 			
 			broadcastMesg("S2P_WRONG_ANSWER");
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -289,7 +300,7 @@ public class Game {
 								"Wolf", "Dog", "Smartphone", "Elephant",
 								"Butterfly", "Strawberry", "Blueberry"};
 		
-		String[] koreanAnswerList = {"기린", "고슴도치","표범","고양이","너구리","사자","비둘기","토끼","늑대","개","스마트폰","코끼리","나비","딸기","블루베리"};
+		String[] koreanAnswerList = {"기린","고슴도치","표범","고양이","너구리","사자","비둘기","토끼","늑대","개","스마트폰","코끼리","나비","딸기","블루베리"};
 		
 		Random rand = new Random ();
 		
@@ -343,4 +354,13 @@ public class Game {
 	}
 	
 }
-//
+
+
+/*
+ * try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ */
