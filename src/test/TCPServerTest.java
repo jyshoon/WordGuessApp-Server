@@ -8,8 +8,7 @@ import java.util.Scanner;
 public class TCPServerTest {
 	
 	
-	// 源�寃쏀썕 �닔�젙.
-	private static int PORT = 8005;
+	private static int PORT = 8000;
 	//////////////
 	public static GameManager gameManager = new GameManager();
 	///

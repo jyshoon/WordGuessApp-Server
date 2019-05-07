@@ -108,7 +108,6 @@ public class Game {
 	}
 	
 	public void processSendHitListEnd (String[] mesg){
-		
 		broadcastMesg ("S2P_RECV_HINT_LIST_END", mesg);
 		
 	}
@@ -354,13 +353,3 @@ public class Game {
 	}
 	
 }
-
-
-/*
- * try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
- */
