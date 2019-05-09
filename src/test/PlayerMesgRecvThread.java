@@ -167,6 +167,14 @@ public class PlayerMesgRecvThread extends Thread {
 		game.processAnswerTimeOver();		
 	}
 	
+	private void process_P2S_EXIT_GAME(String mesg){		//프로세스 종료시키는 메시지 send
+		String[] args = mesg.split("####");
+		String myNum = args[1];
+		
+		player.sendMessage("S2P_EXIT_GAME");
+		
+	}
+	
 	public void run () {
 		while (true) {
 			String mesg = null;
@@ -225,6 +233,12 @@ public class PlayerMesgRecvThread extends Thread {
 			case MessageParser.P2S_ANSWER_TIME_OVER:
 				process_P2S_ANSWER_TIME_OVER (mesg);
 				break;
+				
+			case MessageParser.P2S_EXIT_GAME:
+				process_P2S_EXIT_GAME(mesg);
+				break;
+
+
 			}
 		}
 	}
