@@ -155,8 +155,8 @@ public class Game {
 	
 	private boolean checkEndOfGame ()
 	{
-		//if (round == finalRound && hostPlayerNum == playerList.size() - 1) 
-		if (round == 1 && hostPlayerNum == playerList.size() - 1) 
+		if (round == finalRound && hostPlayerNum == playerList.size() - 1) 
+		//if (round == 1 && hostPlayerNum == playerList.size() - 1) 
 			return true;
 		else
 			return false;
