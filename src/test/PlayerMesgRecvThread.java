@@ -57,6 +57,16 @@ public class PlayerMesgRecvThread extends Thread {
 		game.processReadyGame (number);
 	}
 	
+	private void process_P2S_EXIT_ROOM (String mesg) {
+		String[] args = mesg.split("####");
+		
+		int number = Integer.parseInt(args[1]);
+		
+		if ( number > 0 )
+			game.processExitRoom (player);
+		
+	}
+	
 	private void process_P2S_READY_PLAY (String mesg) {
 		
 		player.setPlayReady(true);
@@ -208,6 +218,11 @@ public class PlayerMesgRecvThread extends Thread {
 			case MessageParser.P2S_READY_GAME:
 				
 				process_P2S_READY_GAME (mesg);
+				break;
+			
+			case MessageParser.P2S_EXIT_ROOM:
+				
+				process_P2S_EXIT_ROOM (mesg);
 				break;
 			
 			case MessageParser.P2S_READY_PLAY:
