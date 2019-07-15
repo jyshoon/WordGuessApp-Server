@@ -14,7 +14,7 @@ public class Game {
 	
 	private int round = 1;
 	private int stage = 0;
-	private int hostPlayerNum = 0;
+	private int hostPlayerIndex = 0;
 	private String answer;
 	private String koreanAnswer;
 	
@@ -59,16 +59,32 @@ public class Game {
 	
 	public void addPlayer (Player player) {
 		
-		player.setNumber(playerList.size());
+		int newNumber = playerList.size();
+		for (int i = 0; i < playerList.size(); i++) {
+			boolean existNumber = false;
+			for (Player p : playerList)
+				if (p.getNumber() == i) {
+					existNumber = true;
+					break;
+				}
+			if (existNumber == false) {
+				newNumber = i;
+				break;
+			}	
+		}
+		player.setNumber(newNumber);
+		
 		playerList.add(player);
 		
+	
 	}
 	
 	public void processExitRoom (Player player) {
 		
+		broadcastMesg("S2P_EXIT_ROOM", player.getNumber()+"");
 		playerList.remove(player);
-		player.sendMessage("S2P_EXIT_ROOM", "1");
-
+		for(Player p : playerList)
+			p.setReady(false);
 		
 	}
 	
@@ -135,25 +151,25 @@ public class Game {
 	private void newProblem () {
 		
 
-		if (hostPlayerNum == playerList.size() - 1) {
+		if (hostPlayerIndex == playerList.size() - 1) {
 			round ++;
 			String[] args = new String[1];
 			args[0] = round + "";
 			broadcastMesg ("S2P_NEW_ROUND", args);
-			hostPlayerNum = 0;
+			hostPlayerIndex = 0;
 		}
 		else 
-			hostPlayerNum ++;
+			hostPlayerIndex ++;
 		
 		stage = 0;
 		answer = generateAnswer ();
-		playerList.get(hostPlayerNum).setAnswerChance(false);
+		playerList.get(hostPlayerIndex).setAnswerChance(false);
 		
 		String[] args = new String[1];
 		args[0] = answer;
-		playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", args);
+		playerList.get(hostPlayerIndex).sendMessage("S2P_RECV_ANSWER", args);
 		for (Player p : playerList) {
-			if (p != playerList.get(hostPlayerNum)) {
+			if (p != playerList.get(hostPlayerIndex)) {
 				p.sendMessage("S2P_RECV_HINT_READY");
 				p.setAnswerChance(true);
 			}
@@ -162,8 +178,8 @@ public class Game {
 	
 	private boolean checkEndOfGame ()
 	{
-		//if (round == finalRound && hostPlayerNum == playerList.size() - 1) 
-		if (round == 1 && hostPlayerNum == playerList.size() - 1) 
+		//if (round == finalRound && hostPlayerIndex == playerList.size() - 1) 
+		if (round == 1 && hostPlayerIndex == playerList.size() - 1) 
 			return true;
 		else
 			return false;
@@ -183,16 +199,17 @@ public class Game {
 		gameMngr.removeGame(this);
 	}
 	
-	private void hitAnswer (int number, String answer) {
-		String[] args = new String[playerList.size()+1];
+	private void hitAnswer (Player player, int number, String answer) {
 		
-		// TODO: �젏�닔 怨꾩궛 
-		playerList.get(number).addScore(10);
-		playerList.get(hostPlayerNum).addScore(5);
+		String[] args = new String[playerList.size()*2+1];
+		
+		player.addScore(10);
+		playerList.get(hostPlayerIndex).addScore(5);
 		
 		args[0] = number + "";
 		for (int i = 0; i < playerList.size(); i++) {
-			args[i+1] = "" + playerList.get(i).getScore();
+			args[2*i+1] = "" + playerList.get(i).getNumber();
+			args[2*i+2] = "" + playerList.get(i).getScore();
 		}
 		broadcastMesg ("S2P_CORRECT_ANSWER", args);
 		
@@ -213,7 +230,7 @@ public class Game {
 	
 	
 	
-	public void processSendGuessAnswer (int number, String playerAnswer) {
+	public void processSendGuessAnswer (Player player, int number, String playerAnswer) {
 		String[] args = new String[3];
 		args[0] = number + "";
 		args[1] = playerAnswer;
@@ -227,22 +244,22 @@ public class Game {
 		
 		if (answer.compareTo(playerAnswer) == 0 || koreanAnswer.compareTo(playerAnswer)==0) {
 			args[2] = "1"; // Correct answer
-			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", playerList.get(number).getId());
+			System.out.printf ("Ohhh.. the player [%s] hits the answer !!\n", player.getId());
 
 		}
 		else {
 			args[2] = "0"; // Wrong answer
-			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", playerList.get(number).getId());
+			System.out.printf ("No.. the player [%s] gives a wrong answer !!\n", player.getId());
 		}
 		
 		broadcastMesg ("S2P_RECV_GUESS_ANSWER", args);			//정답인가 오답인가 보내줌
 
 		
 		if (answer.compareTo(playerAnswer) == 0 || koreanAnswer.compareTo(playerAnswer)==0) {				//정답이라면	
-			hitAnswer (number, playerAnswer);
+			hitAnswer (player, number, playerAnswer);
 		}
 		else {													//오답이라면
-			playerList.get(number).setAnswerChance (false);
+			player.setAnswerChance (false);
 			boolean allWrongAnswer = true;
 			for (Player p : playerList) {
 				if (p.getAnswerChance() == true)
@@ -282,22 +299,22 @@ public class Game {
 			
 			for (Player p : playerList)
 				p.setAnswerChance(true);
-			playerList.get(hostPlayerNum).setAnswerChance(false);
+			playerList.get(hostPlayerIndex).setAnswerChance(false);
 			
 			broadcastMesg("S2P_NEW_STAGE", args);
 		}
-		
+		 	
 	}
 
 	
 	private void initGame () {
 		round = 1;
 		stage = 0;
-		hostPlayerNum = 0;
+		hostPlayerIndex = 0;
 
 		for (Player p : playerList)
 			p.setAnswerChance(true);
-		playerList.get(hostPlayerNum).setAnswerChance(false);
+		playerList.get(hostPlayerIndex).setAnswerChance(false);
 	}
 	
 	private String generateAnswer () {
@@ -331,9 +348,9 @@ public class Game {
 			
 			String[] args = new String[1];
 			args[0] = answer;
-			playerList.get(hostPlayerNum).sendMessage("S2P_RECV_ANSWER", args);	//문제담당
+			playerList.get(hostPlayerIndex).sendMessage("S2P_RECV_ANSWER", args);	//문제담당
 			for (Player p : playerList) {
-				if (p != playerList.get(hostPlayerNum))
+				if (p != playerList.get(hostPlayerIndex))
 					p.sendMessage("S2P_RECV_HINT_READY");						//나머지
 			}
 			

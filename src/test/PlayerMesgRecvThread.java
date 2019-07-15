@@ -106,7 +106,7 @@ public class PlayerMesgRecvThread extends Thread {
 		int number = Integer.parseInt(args[1]);
 		String answer = args[2];
 		
-		game.processSendGuessAnswer (number, answer);
+		game.processSendGuessAnswer (player,number, answer);
 	}
 	
 	private void process_P2S_REQ_ROOM_LIST (String mesg) {
