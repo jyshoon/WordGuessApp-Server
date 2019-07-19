@@ -180,7 +180,7 @@ public class PlayerMesgRecvThread extends Thread {
 		String[] args = mesg.split("####");
 		String myNum = args[1];
 		
-		player.sendMessage("S2P_EXIT_GAME");
+		game.processExitGame (player);
 		
 	}
 	

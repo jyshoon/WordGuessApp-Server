@@ -32,6 +32,13 @@ public class Player {
 		
 	}
 
+	void initGame () {
+		isReady = false;
+		isPlayReady = false;
+		score = 0;
+		hasAnswerChance = true;
+	}
+	
 	public void setAnswerChance (boolean flag) {
 		hasAnswerChance = flag;
 	}

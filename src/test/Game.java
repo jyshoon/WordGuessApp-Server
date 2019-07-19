@@ -74,6 +74,7 @@ public class Game {
 		}
 		player.setNumber(newNumber);
 		
+		player.initGame();
 		playerList.add(player);
 		
 	
@@ -386,6 +387,19 @@ public class Game {
 		System.out.println ("Broadcast : " + type + "\n");
 		for (Player player : playerList) 
 			player.sendMessage(type, data);
+	}
+
+
+	public void processExitGame(Player player) {
+		// TODO Auto-generated method stub
+		
+		player.sendMessage("S2P_EXIT_GAME");
+		playerList.remove(player);
+		if (playerList.size() == 0) {
+			System.out.println ("Game " + this.roomName + " is removed after the game.");
+			gameMngr.removeGame(this);
+		}
+
 	}
 	
 }
