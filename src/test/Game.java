@@ -135,7 +135,7 @@ public class Game {
 			broadcastMesg("S2P_PLAYER_GAME_READY", arg);
 		}
 		
-		if (isAllReady) {
+		if (isAllReady && playerList.size() > 1) {
 			System.out.println ("-------------> All Ready  \n");
 			status = PLAYING;
 			broadcastMesg ("S2P_START_GAME", playerList.size() +"");
