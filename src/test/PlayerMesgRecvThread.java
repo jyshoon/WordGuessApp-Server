@@ -62,8 +62,7 @@ public class PlayerMesgRecvThread extends Thread {
 		
 		int number = Integer.parseInt(args[1]);
 		
-		if ( number > 0 )
-			game.processExitRoom (player);
+		game.processExitRoom (player);
 		
 	}
 	

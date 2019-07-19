@@ -81,10 +81,22 @@ public class Game {
 	
 	public void processExitRoom (Player player) {
 		
-		broadcastMesg("S2P_EXIT_ROOM", player.getNumber()+"");
-		playerList.remove(player);
-		for(Player p : playerList)
-			p.setReady(false);
+		
+		if (player.getNumber() == 0) { // 방장이 호출했을 때
+			if (playerList.size() > 1) { // 방장은 제일 마지막에 나가야 함. 
+				player.sendMessage("S2P_EXIT_ROOM_FAIL");
+			}
+			else {  // 방장이 혼자 있음. 
+				player.sendMessage("S2P_EXIT_ROOM", player.getNumber()+"");
+				gameMngr.removeGame(this);
+			}
+		}
+		else {
+			broadcastMesg("S2P_EXIT_ROOM", player.getNumber()+"");
+			playerList.remove(player);
+			for(Player p : playerList)
+				p.setReady(false);
+		}
 		
 	}
 	
